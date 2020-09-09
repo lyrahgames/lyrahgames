@@ -1,0 +1,34 @@
+#pragma once
+
+// The numeric version format is AAAAABBBBBCCCCCDDDE where:
+//
+// AAAAA - major version number
+// BBBBB - minor version number
+// CCCCC - bugfix version number
+// DDD   - alpha / beta (DDD + 500) version number
+// E     - final (0) / snapshot (1)
+//
+// When DDDE is not 0, 1 is subtracted from AAAAABBBBBCCCCC. For example:
+//
+// Version      AAAAABBBBBCCCCCDDDE
+//
+// 0.1.0        0000000001000000000
+// 0.1.2        0000000001000020000
+// 1.2.3        0000100002000030000
+// 2.2.0-a.1    0000200001999990010
+// 3.0.0-b.2    0000299999999995020
+// 2.2.0-a.1.z  0000200001999990011
+//
+#define LYRAHGAMES_VERSION       $lyrahgames.version.project_number$ULL
+#define LYRAHGAMES_VERSION_STR   "$lyrahgames.version.project$"
+#define LYRAHGAMES_VERSION_ID    "$lyrahgames.version.project_id$"
+#define LYRAHGAMES_VERSION_FULL  "$lyrahgames.version$"
+
+#define LYRAHGAMES_VERSION_MAJOR $lyrahgames.version.major$
+#define LYRAHGAMES_VERSION_MINOR $lyrahgames.version.minor$
+#define LYRAHGAMES_VERSION_PATCH $lyrahgames.version.patch$
+
+#define LYRAHGAMES_PRE_RELEASE   $lyrahgames.version.pre_release$
+
+#define LYRAHGAMES_SNAPSHOT_SN   $lyrahgames.version.snapshot_sn$ULL
+#define LYRAHGAMES_SNAPSHOT_ID   "$lyrahgames.version.snapshot_id$"
