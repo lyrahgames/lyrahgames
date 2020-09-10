@@ -12,6 +12,7 @@ class hash_map {
   using mapped_type = T;
   using hasher = Hash;
   using key_equal = Key_equal;
+  using value_type = std::pair<const Key, T>;
 
   struct container {
     container(size_t n = 0) : size{n} {
@@ -46,30 +47,55 @@ class hash_map {
 
   template <bool Constant>
   struct iterator_t {
-    using value_type = hash_map::value_type;
-    using difference_type = hash_map::difference_type;
     using reference =
-        std::conditional_t<Constant, const value_type&, value_type&>;
-    using pointer =
-        std::conditional_t<Constant, const value_type*, value_type*>;
+        std::conditional_t<Constant,
+                           std::pair<const key_type&, const mapped_type&>,
+                           std::pair<const key_type&, mapped_type&>>;
 
-    iterator_t& operator++() {}
-    iterator_t operator++(int) {}
-
+    iterator_t& operator++() {
+      do {
+        ++index;
+      } while ((index < base->size) && !base->psl[index]);
+      return *this;
+    }
+    iterator_t operator++(int) {
+      auto ip = *this;
+      ++(*this);
+      return ip;
+    }
+    reference operator*() const {
+      return {base->keys[index], base->values[index]};
+    }
     bool operator==(iterator_t it) const noexcept {
       return (base == it.base) && (index == it.index);
     }
-    bool operator!=(iterator_t it) const noexcept { return !(*this == it); }
+    bool operator!=(iterator_t it) const noexcept {
+      return (index != it.index) || (base != it.base);
+    }
 
     container* base{nullptr};
     size_t index{0};
   };
+
+  using iterator = iterator_t<false>;
+  using const_iterator = iterator_t<true>;
 
   hash_map() = default;
 
   bool empty() const noexcept { return _load == 0; }
   size_t size() const noexcept { return _load; }
   size_t capacity() const noexcept { return _table.size; }
+
+  iterator begin() noexcept {
+    for (size_t i = 0; i < _table.size; ++i)
+      if (_table.psl[i]) return {&_table, i};
+    return {&_table, _table.size};
+  }
+  // const_iterator begin() const noexcept;
+  // const_iterator cbegin() const noexcept;
+  iterator end() noexcept { return {&_table, _table.size}; }
+  // const_iterator end() const noexcept;
+  // const_iterator cend() const noexcept;
 
   std::pair<size_t, size_t> key_swap_index(const key_type& key) const noexcept {
     size_t index = hash(key) & _capacity_mask;

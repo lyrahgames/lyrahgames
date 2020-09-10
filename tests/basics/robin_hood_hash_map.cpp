@@ -49,6 +49,9 @@ int main() {
     // cout << map << '\n';
     map.erase(1);
     cout << map << '\n';
+
+    for (auto [k, v] : map)
+      cout << "{" << setw(8) << k << " : " << setw(8) << v << "}\n";
   }
 
   {
@@ -83,5 +86,20 @@ int main() {
     cout << map << '\n';
     map.erase("bpkg");
     cout << map << '\n';
+
+    // for (auto it = map.begin(); it != map.end(); ++it) {
+    //   const auto [k, v] = *it;
+    //   v = 1;
+    //   // cout << "{" << setw(8) << k << " : " << setw(8) << v << "}\n";
+    // }
+
+    // cout << map << '\n';
+
+    // for (auto it = map.begin(); it != map.end(); ++it) {
+    //   auto [k, v] = *it;
+    //   cout << "{" << setw(8) << k << " : " << setw(8) << v << "}\n";
+    // }
+    for (auto [k, v] : map)
+      cout << "{" << setw(8) << k << " : " << setw(8) << v << "}\n";
   }
 }
