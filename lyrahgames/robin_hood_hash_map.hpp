@@ -131,7 +131,7 @@ class hash_map {
     size_t index = hash(key) & _capacity_mask;
     size_t psl = 1;
     for (; psl <= _table.psl[index]; ++psl) {
-      if (_table.keys[index] == key) return {index, psl};
+      if (equal_to(_table.keys[index], key)) return {index, psl};
       index = (index + 1) & _capacity_mask;
     }
     return {index, psl};
@@ -195,7 +195,7 @@ class hash_map {
     size_t index = hash(key) & _capacity_mask;
     size_t psl = 1;
     for (; psl <= _table.psl[index]; ++psl) {
-      if (_table.keys[index] == key) return _table.values[index];
+      if (equal_to(_table.keys[index], key)) return _table.values[index];
       index = (index + 1) & _capacity_mask;
     }
 
@@ -216,7 +216,7 @@ class hash_map {
     size_t index = hash(key) & _capacity_mask;
     size_t psl = 1;
     for (; psl <= _table.psl[index]; ++psl) {
-      if (_table.keys[index] == key) return &_table.values[index];
+      if (equal_to(_table.keys[index], key)) return &_table.values[index];
       index = (index + 1) & _capacity_mask;
     }
     return nullptr;
@@ -239,7 +239,7 @@ class hash_map {
     size_t index = hash(key) & _capacity_mask;
     size_t psl = 1;
     for (; psl <= _table.psl[index]; ++psl) {
-      if (_table.keys[index] == key) {
+      if (equal_to(_table.keys[index], key)) {
         erase_by_swap(index);
         --_load;
         return true;
