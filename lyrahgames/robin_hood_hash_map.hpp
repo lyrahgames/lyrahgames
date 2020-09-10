@@ -44,6 +44,27 @@ class hash_map {
     size_t size{};
   };
 
+  template <bool Constant>
+  struct iterator_t {
+    using value_type = hash_map::value_type;
+    using difference_type = hash_map::difference_type;
+    using reference =
+        std::conditional_t<Constant, const value_type&, value_type&>;
+    using pointer =
+        std::conditional_t<Constant, const value_type*, value_type*>;
+
+    iterator_t& operator++() {}
+    iterator_t operator++(int) {}
+
+    bool operator==(iterator_t it) const noexcept {
+      return (base == it.base) && (index == it.index);
+    }
+    bool operator!=(iterator_t it) const noexcept { return !(*this == it); }
+
+    container* base{nullptr};
+    size_t index{0};
+  };
+
   hash_map() = default;
 
   bool empty() const noexcept { return _load == 0; }
