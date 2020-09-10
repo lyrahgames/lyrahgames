@@ -113,9 +113,8 @@ class robin_hood_hash_map {
   }
 
   mapped_type& operator[](const key_type& key) {
-    size_t index = hash(key) & _capacity_mask;
-
     // Try to find the element.
+    size_t index = hash(key) & _capacity_mask;
     size_t psl = 1;
     for (; psl <= _table.flags[index]; ++psl) {
       if (_table.keys[index] == key) return _table.values[index];
@@ -126,51 +125,42 @@ class robin_hood_hash_map {
     ++_load;
     if (_load >= _max_load_factor * _table.size) {
       double_capacity_and_rehash();
-      // The index and psl have been invalidated by rehashing.
-      // size_t index = hash(key) & _capacity_mask;
-      // size_t psl = 1;
-      // for (; psl <= _table.flags[index]; ++psl) {
-      //   // Key is not part of map.
-      //   // if (_table.keys[index] == key) break;
-      //   index = (index + 1) & _capacity_mask;
-      // }
       const auto [tmp_index, tmp_psl] = new_key_swap_index(key);
       index = tmp_index;
       psl = tmp_psl;
     }
 
-    mapped_type& result = _table.values[index];
-
     insert_key_by_swap(key, index, psl);
-    // if (!_table.flags[index]) {
-    //   _table.keys[index] = key;
-    //   // _table.values[index] = std::move(tmp_value);
-    //   _table.flags[index] = psl;
-    //   return result;
-    // }
+    return _table.values[index];
+  }
 
-    // key_type tmp_key = std::move(_table.keys[index]);
-    // mapped_type tmp_value = std::move(_table.values[index]);
-    // _table.keys[index] = key;
-    // // _table.values[index] = mapped_type{};
-    // std::swap(psl, _table.flags[index]);
-    // ++psl;
-    // index = (index + 1) & _capacity_mask;
+  mapped_type* find(const key_type& key) const noexcept {
+    size_t index = hash(key) & _capacity_mask;
+    size_t psl = 1;
+    for (; psl <= _table.flags[index]; ++psl) {
+      if (_table.keys[index] == key) return &_table.values[index];
+      index = (index + 1) & _capacity_mask;
+    }
+    return nullptr;
+  }
 
-    // for (; _table.flags[index]; ++psl) {
-    //   if (psl > _table.flags[index]) {
-    //     std::swap(psl, _table.flags[index]);
-    //     std::swap(tmp_key, _table.keys[index]);
-    //     std::swap(tmp_value, _table.values[index]);
-    //   }
-    //   index = (index + 1) & _capacity_mask;
-    // }
+  void erase_by_swap(size_t index) {
+    size_t next_index = (index + 1) & _capacity_mask;
+    if (_table.flags[next_index] > 1) {
+    }
+  }
 
-    // _table.keys[index] = std::move(tmp_key);
-    // _table.values[index] = std::move(tmp_value);
-    // _table.flags[index] = psl;
-
-    return result;
+  bool erase(const key_type& key) noexcept {
+    size_t index = hash(key) & _capacity_mask;
+    size_t psl = 1;
+    for (; psl <= _table.flags[index]; ++psl) {
+      if (_table.keys[index] == key) {
+        erase_by_swap(index);
+        return true;
+      }
+      index = (index + 1) & _capacity_mask;
+    }
+    return false;
   }
 
   container _table{8};
