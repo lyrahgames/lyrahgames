@@ -2,3 +2,4 @@ import libs = lyrahgames%lib{lyrahgames}
 
 ./: exe{version}: cxx{version} $libs
 ./: exe{hash_map}: cxx{hash_map} $libs
+./: exe{robin_hood_hash_map}: cxx{robin_hood_hash_map} $libs
