@@ -146,8 +146,15 @@ class robin_hood_hash_map {
 
   void erase_by_swap(size_t index) {
     size_t next_index = (index + 1) & _capacity_mask;
-    if (_table.flags[next_index] > 1) {
+    while (_table.flags[next_index] > 1) {
+      _table.keys[index] = std::move(_table.keys[next_index]);
+      _table.values[index] = std::move(_table.values[next_index]);
+      _table.flags[index] = _table.flags[next_index] - 1;
+      index = next_index;
+      next_index = (next_index + 1) & _capacity_mask;
     }
+    _table.flags[index] = 0;
+    // destroy key and value
   }
 
   bool erase(const key_type& key) noexcept {
@@ -156,6 +163,7 @@ class robin_hood_hash_map {
     for (; psl <= _table.flags[index]; ++psl) {
       if (_table.keys[index] == key) {
         erase_by_swap(index);
+        --_load;
         return true;
       }
       index = (index + 1) & _capacity_mask;

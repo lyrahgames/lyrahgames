@@ -56,8 +56,10 @@ int main() {
   cout << map << '\n';
   map[1] = 6;
   cout << map << '\n';
+  map[6] = 8;
+  cout << map << '\n';
   map[32] = 7;
   cout << map << '\n';
-  map[6] = 8;
+  map.erase(1);
   cout << map << '\n';
 }
