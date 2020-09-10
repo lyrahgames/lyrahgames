@@ -72,6 +72,17 @@ class hash_map {
     return index;
   }
 
+  size_t key_insert_index(key_type key) const noexcept {
+    const auto capacity_mask = _table.size - 1u;
+    auto index = std::hash<key_type>{}(key)&capacity_mask;
+    auto deleted_index = index;
+    while ((_table.flags[index]) && (_table.keys[index] != key)) {
+      if (_table.flags[index] == 2) deleted_index = index;
+      index = (index + 1) & capacity_mask;
+    }
+    return index;
+  }
+
   // void rehash(size_t n) {}
   void double_capacity_and_rehash() {
     container old_table{_table.size << 1u};
@@ -100,6 +111,15 @@ class hash_map {
     if (_load >= _max_load_factor * _table.size) double_capacity_and_rehash();
   }
 
+  void insert(const key_type& key, const mapped_type& value) {
+    const auto index = key_index(key);
+    if (!_table.flags[index]) ++_load;
+    _table.keys[index] = key;
+    _table.values[index] = value;
+    _table.flags[index] = 1;
+    if (_load >= _max_load_factor * _table.size) double_capacity_and_rehash();
+  }
+
   mapped_type& operator[](const key_type& key) {
     const auto index = key_index(key);
     if (!_table.flags[index]) {
@@ -114,6 +134,12 @@ class hash_map {
       }
     }
     return _table.values[index];
+  }
+
+  mapped_type* find(const key_type& key) noexcept {
+    const auto index = key_index(key);
+    if (!_table.flags[index]) return nullptr;
+    return &_table.values[index];
   }
 
   bool erase(const key_type& key) {

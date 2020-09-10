@@ -15,19 +15,31 @@ ostream& operator<<(ostream& os, lyrahgames::hash_map& map) {
 
 int main() {
   lyrahgames::hash_map map{};
-  //   map.insert({0, 1});
-  // map.insert({3, 2});
-  // map.insert({7, 3});
-  // map.insert({24, 4});
-  // map.insert({4, 5});
-  // map.insert({8, 6});
-  // map.insert({8, 7});
-  // map.insert({123, 8});
-  map[24] = 4;
-  map[123] = 8;
-  map[8] = 6;
-  map[3] = 2;
-  map[5] = 5;
-  map[10] = 1;
+
+  assert(map.size() == 0);
+  assert(map.capacity() == 8);
+  assert(map.empty());
+  assert(map.find(5) == nullptr);
+
+  map.insert(0, 1);
+
+  assert(map.size() == 1);
+  assert(!map.empty());
+  assert(*map.find(0) == 1);
+  assert(map.find(4) == nullptr);
+
+  map.insert(3, 2);
+  map.insert(7, 3);
+  map.insert(24, 4);
+  map.insert(4, 5);
+  map.insert(8, 6);
+  map.insert(8, 7);
+  map.insert(123, 8);
+  // map[24] = 4;
+  // map[123] = 8;
+  // map[8] = 6;
+  // map[3] = 2;
+  // map[5] = 5;
+  // map[10] = 1;
   cout << map << '\n';
 }
