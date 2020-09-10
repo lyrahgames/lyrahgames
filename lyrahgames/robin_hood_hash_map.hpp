@@ -5,26 +5,54 @@
 namespace lyrahgames::robin_hood {
 
 template <typename Key, typename T, typename Hash = std::hash<Key>,
-          typename Key_equal = std::equal_to<Key>>
+          typename Key_equal = std::equal_to<Key>,
+          typename Allocator = std::allocator<Key>>
 class hash_map {
  public:
   using key_type = Key;
   using mapped_type = T;
   using hasher = Hash;
   using key_equal = Key_equal;
-  using value_type = std::pair<const Key, T>;
+  // using value_type = std::pair<const Key, T>;
+  using allocator_type = Allocator;
 
   struct container {
     container(size_t n = 0) : size{n} {
-      keys = new key_type[size];
-      values = new mapped_type[size];
-      psl = new size_t[size]{0};
+      // keys = new key_type[size];
+      // values = new mapped_type[size];
+      // psl = new size_t[size]{0};
+      typename std::allocator_traits<allocator_type>::rebind_alloc<key_type>
+          key_alloc{};
+      keys =
+          std::allocator_traits<decltype(key_alloc)>::allocate(key_alloc, size);
+      typename std::allocator_traits<allocator_type>::rebind_alloc<mapped_type>
+          value_alloc{};
+      values = std::allocator_traits<decltype(value_alloc)>::allocate(
+          value_alloc, size);
+      typename std::allocator_traits<allocator_type>::rebind_alloc<size_t>
+          psl_alloc{};
+      psl =
+          std::allocator_traits<decltype(psl_alloc)>::allocate(psl_alloc, size);
+      for (size_t i = 0; i < size; ++i) psl[i] = 0;
     }
 
     ~container() {
-      delete[] keys;
-      delete[] values;
-      delete[] psl;
+      // delete[] keys;
+      // delete[] values;
+      // delete[] psl;
+      typename std::allocator_traits<allocator_type>::rebind_alloc<key_type>
+          key_alloc{};
+
+      std::allocator_traits<decltype(key_alloc)>::deallocate(key_alloc, keys,
+                                                             size);
+      typename std::allocator_traits<allocator_type>::rebind_alloc<mapped_type>
+          value_alloc{};
+      std::allocator_traits<decltype(value_alloc)>::deallocate(value_alloc,
+                                                               values, size);
+      typename std::allocator_traits<allocator_type>::rebind_alloc<size_t>
+          psl_alloc{};
+      std::allocator_traits<decltype(psl_alloc)>::deallocate(psl_alloc, psl,
+                                                             size);
     }
 
     container(const container&) = delete;
@@ -67,10 +95,12 @@ class hash_map {
       return {base->keys[index], base->values[index]};
     }
     bool operator==(iterator_t it) const noexcept {
-      return (base == it.base) && (index == it.index);
+      // return (base == it.base) && (index == it.index);
+      return index == it.index;
     }
     bool operator!=(iterator_t it) const noexcept {
-      return (index != it.index) || (base != it.base);
+      // return (index != it.index) || (base != it.base);
+      return index != it.index;
     }
 
     container* base{nullptr};
