@@ -2,8 +2,8 @@
 name: lyrahgames-tests
 version: 0.1.0-a.0.z
 project: lyrahgames
-summary: tests C++ executable
-license: proprietary
+summary: External Tests Package for 'lyrahgames' Library
+license: GPL-3.0-or-later ; GNU General Public License v3.0 or later
 description-file: README.md
 url: https://github.com/lyrahgames/lyrahgames
 email: lyrahgames@mailbox.org
