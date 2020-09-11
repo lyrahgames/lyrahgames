@@ -11,6 +11,7 @@
 !export.build
 !manifest
 !repositories.manifest
+!packages.manifest
 
 !README.md
 
