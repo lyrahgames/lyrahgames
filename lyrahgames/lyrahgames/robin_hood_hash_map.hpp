@@ -1,5 +1,6 @@
 #pragma once
 #include <functional>
+#include <stdexcept>
 #include <vector>
 
 namespace lyrahgames::robin_hood {
@@ -115,6 +116,14 @@ class hash_map {
   bool empty() const noexcept { return _load == 0; }
   size_t size() const noexcept { return _load; }
   size_t capacity() const noexcept { return _table.size; }
+  float load_factor() const noexcept { return float(_load) / _table.size; }
+  float max_load_factor() const noexcept { return _max_load_factor; }
+  void max_load_factor(float f) {
+    if ((f <= 0.0f) || (f >= 1.0f))
+      throw std::out_of_range(
+          "max_load_factor has to be a number between 0.0f and 1.0f.");
+    _max_load_factor = f;
+  }
 
   iterator begin() noexcept {
     for (size_t i = 0; i < _table.size; ++i)
