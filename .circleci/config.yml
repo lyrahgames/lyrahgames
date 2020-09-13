@@ -1,0 +1,19 @@
+version: 2
+
+jobs:
+  gcc10:
+    docker:
+      - image: lyrahgames/gcc-build2:10-0.13
+    steps:
+      - checkout
+      - run:
+          name: build2_configure_build_test
+          command: |
+            bdep init -C @gcc cc config.cxx=g++
+            b test: tests/
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - gcc10

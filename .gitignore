@@ -16,5 +16,7 @@
 !README.md
 !COPYING
 
+!.circleci/**
+
 !.gitignore
 !.gitattributes
