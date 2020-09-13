@@ -19,41 +19,45 @@ class hash_map {
 
   struct container {
     container(size_t n = 0) : size{n} {
-      // keys = new key_type[size];
-      // values = new mapped_type[size];
-      // psl = new size_t[size]{0};
-      typename std::allocator_traits<allocator_type>::rebind_alloc<key_type>
-          key_alloc{};
-      keys =
-          std::allocator_traits<decltype(key_alloc)>::allocate(key_alloc, size);
-      typename std::allocator_traits<allocator_type>::rebind_alloc<mapped_type>
-          value_alloc{};
-      values = std::allocator_traits<decltype(value_alloc)>::allocate(
-          value_alloc, size);
-      typename std::allocator_traits<allocator_type>::rebind_alloc<size_t>
-          psl_alloc{};
-      psl =
-          std::allocator_traits<decltype(psl_alloc)>::allocate(psl_alloc, size);
-      for (size_t i = 0; i < size; ++i) psl[i] = 0;
+      keys = new key_type[size];
+      values = new mapped_type[size];
+      psl = new size_t[size]{0};
+      // typename std::allocator_traits<allocator_type>::rebind_alloc<key_type>
+      //     key_alloc{};
+      // keys =
+      //     std::allocator_traits<decltype(key_alloc)>::allocate(key_alloc,
+      //     size);
+      // typename
+      // std::allocator_traits<allocator_type>::rebind_alloc<mapped_type>
+      //     value_alloc{};
+      // values = std::allocator_traits<decltype(value_alloc)>::allocate(
+      //     value_alloc, size);
+      // typename std::allocator_traits<allocator_type>::rebind_alloc<size_t>
+      //     psl_alloc{};
+      // psl =
+      //     std::allocator_traits<decltype(psl_alloc)>::allocate(psl_alloc,
+      //     size);
+      // for (size_t i = 0; i < size; ++i) psl[i] = 0;
     }
 
     ~container() {
-      // delete[] keys;
-      // delete[] values;
-      // delete[] psl;
-      typename std::allocator_traits<allocator_type>::rebind_alloc<key_type>
-          key_alloc{};
+      delete[] keys;
+      delete[] values;
+      delete[] psl;
+      // typename std::allocator_traits<allocator_type>::rebind_alloc<key_type>
+      //     key_alloc{};
 
-      std::allocator_traits<decltype(key_alloc)>::deallocate(key_alloc, keys,
-                                                             size);
-      typename std::allocator_traits<allocator_type>::rebind_alloc<mapped_type>
-          value_alloc{};
-      std::allocator_traits<decltype(value_alloc)>::deallocate(value_alloc,
-                                                               values, size);
-      typename std::allocator_traits<allocator_type>::rebind_alloc<size_t>
-          psl_alloc{};
-      std::allocator_traits<decltype(psl_alloc)>::deallocate(psl_alloc, psl,
-                                                             size);
+      // std::allocator_traits<decltype(key_alloc)>::deallocate(key_alloc, keys,
+      //                                                        size);
+      // typename
+      // std::allocator_traits<allocator_type>::rebind_alloc<mapped_type>
+      //     value_alloc{};
+      // std::allocator_traits<decltype(value_alloc)>::deallocate(value_alloc,
+      //                                                          values, size);
+      // typename std::allocator_traits<allocator_type>::rebind_alloc<size_t>
+      //     psl_alloc{};
+      // std::allocator_traits<decltype(psl_alloc)>::deallocate(psl_alloc, psl,
+      //                                                        size);
     }
 
     container(const container&) = delete;
