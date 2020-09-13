@@ -1,3 +1,3 @@
-import pkgs = */
+import pkgs = lyrahgames/ tests/
 
 ./: $pkgs

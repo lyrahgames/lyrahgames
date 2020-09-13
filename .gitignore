@@ -19,6 +19,7 @@
 !COPYING
 !AUTHORS.md
 
+!.githooks/**
 !.circleci/**
 !.github/**
 
