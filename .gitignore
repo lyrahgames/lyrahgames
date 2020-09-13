@@ -13,8 +13,11 @@
 !repositories.manifest
 !packages.manifest
 
+!docs
+
 !README.md
 !COPYING
+!AUTHORS.md
 
 !.circleci/**
 

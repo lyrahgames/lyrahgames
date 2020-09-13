@@ -1,0 +1,75 @@
+site_name: lyrahgames C++ library
+site_url: https://lyrahgames.github.io/lyrahgames
+site_author: Markus Pawellek
+site_description: >-
+  lyrahgames C++ Library
+
+repo_name: lyrahgames/lyrahgames
+repo_url: https://github.com/lyrahgames/lyrahgames
+
+copyright: Copyright &copy; 2020 Markus Pawellek
+
+theme:
+  name: material
+  # custom_dir: overrides
+  language: en
+  features:
+    - tabs
+  palette:
+    scheme: default
+    # scheme: preference
+    primary: white
+    accent: indigo
+    font:
+      text: Roboto
+      code: Roboto Mono
+    icon:
+      logo: material/library
+      repo: fontawesome/brands/git-alt
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/lyrahgames
+
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+      linenums: false
+  - toc:
+      permalink: true
+  - meta
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed
+  - pymdownx.tilde
+  - markdown_include.include:
+      base_path: ./
+
+extra_javascript:
+  # - javascripts/config.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+plugins:
+  - search
+  - minify:
+      minify_html: true
+  - git-revision-date-localized
+  - awesome-pages
