@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+if bdep config list @coverage >/dev/null 2>&1; then
+  if which kcov >/dev/null 2>&1; then
+    bdep update @coverage
+    kcov --include-path=lyrahgames/,../lyrahgames-coverage/lyrahgames/lyrahgames ../coverage ../lyrahgames-coverage/lyrahgames-tests/tests/tests
+    bash <(curl -s https://codecov.io/bash) -s ../coverage -t 19db1497-1d09-4c4f-97f0-1ae02691a2ee
+  else
+    echo "Error: Cannot find kcov to generate code coverage report. Please install kcov first."
+    exit 1
+  fi
+else
+  echo "Warning: No configuration exists for generating code coverage report with kcov. Add '@coverage' build2 configuration."
+  exit 0
+fi
