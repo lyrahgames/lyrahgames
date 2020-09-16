@@ -20,11 +20,11 @@
         <td>
             <a href="https://circleci.com/gh/lyrahgames/lyrahgames/tree/master"><img src="https://circleci.com/gh/lyrahgames/lyrahgames/tree/master.svg?style=svg"></a>
         </td>
-        <!-- <td>
+        <td>
             <a href="https://codecov.io/gh/lyrahgames/lyrahgames">
               <img src="https://codecov.io/gh/lyrahgames/lyrahgames/branch/master/graph/badge.svg" />
             </a>
-        </td> -->
+        </td>
     </tr>
     <!-- <tr>
         <td>
