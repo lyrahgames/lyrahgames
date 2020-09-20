@@ -85,6 +85,9 @@ class hash_map {
                            std::pair<const key_type&, const mapped_type&>,
                            std::pair<const key_type&, mapped_type&>>;
 
+    using container_pointer =
+        std::conditional_t<Constant, const container*, container*>;
+
     iterator_t& operator++() {
       do {
         ++index;
@@ -108,7 +111,7 @@ class hash_map {
       return index != it.index;
     }
 
-    container* base{nullptr};
+    container_pointer base{nullptr};
     size_t index{0};
   };
 
@@ -116,6 +119,10 @@ class hash_map {
   using const_iterator = iterator_t<true>;
 
   hash_map() = default;
+  // hash_map(std::initializer_list<std::pair<key_type, value_type>> list)
+  //     : _table{list.size() / load_factor()} {
+  //   insert(list.begin(), list.end());
+  // }
 
   bool empty() const noexcept { return _load == 0; }
   size_t size() const noexcept { return _load; }
@@ -134,10 +141,14 @@ class hash_map {
       if (_table.psl[i]) return {&_table, i};
     return {&_table, _table.size};
   }
-  // const_iterator begin() const noexcept;
+  const_iterator begin() const noexcept {
+    for (size_t i = 0; i < _table.size; ++i)
+      if (_table.psl[i]) return {&_table, i};
+    return {&_table, _table.size};
+  }
   // const_iterator cbegin() const noexcept;
   iterator end() noexcept { return {&_table, _table.size}; }
-  // const_iterator end() const noexcept;
+  const_iterator end() const noexcept { return {&_table, _table.size}; }
   // const_iterator cend() const noexcept;
 
   std::pair<size_t, size_t> key_swap_index(const key_type& key) const noexcept {
@@ -225,14 +236,50 @@ class hash_map {
     return _table.values[index];
   }
 
-  mapped_type* find(const key_type& key) const noexcept {
+  mapped_type& at(const key_type& key) {
+    // Try to find the element.
     size_t index = hash(key) & _capacity_mask;
     size_t psl = 1;
     for (; psl <= _table.psl[index]; ++psl) {
-      if (equal_to(_table.keys[index], key)) return &_table.values[index];
+      if (equal_to(_table.keys[index], key)) return _table.values[index];
       index = (index + 1) & _capacity_mask;
     }
-    return nullptr;
+    // Could not find the element. So insert it by Robin-Hood swaping.
+    throw std::out_of_range("Given element could not be found in hash_map.");
+  }
+
+  const mapped_type& at(const key_type& key) const {
+    return const_cast<hash_map&>(*this).at(key);
+  }
+
+  // mapped_type* find(const key_type& key) const noexcept {
+  //   size_t index = hash(key) & _capacity_mask;
+  //   size_t psl = 1;
+  //   for (; psl <= _table.psl[index]; ++psl) {
+  //     if (equal_to(_table.keys[index], key)) return &_table.values[index];
+  //     index = (index + 1) & _capacity_mask;
+  //   }
+  //   return nullptr;
+  // }
+
+  iterator find(const key_type& key) noexcept {
+    size_t index = hash(key) & _capacity_mask;
+    size_t psl = 1;
+    for (; psl <= _table.psl[index]; ++psl) {
+      if (equal_to(_table.keys[index], key)) return {&_table, index};
+      index = (index + 1) & _capacity_mask;
+    }
+    return end();
+  }
+
+  const_iterator find(const key_type& key) const noexcept {
+    size_t index = hash(key) & _capacity_mask;
+    size_t psl = 1;
+    for (; psl <= _table.psl[index]; ++psl) {
+      if (equal_to(_table.keys[index], key)) return {&_table, index};
+      index = (index + 1) & _capacity_mask;
+    }
+    return end();
   }
 
   void erase_by_swap(size_t index) {
@@ -260,6 +307,23 @@ class hash_map {
       index = (index + 1) & _capacity_mask;
     }
     return false;
+  }
+
+  template <typename InputIt>
+  void insert(InputIt first, InputIt last) {
+    for (auto it = first; it != last; ++it) {
+      const auto& [key, value] = *it;
+      operator[](key) = value;
+    }
+  }
+
+  template <typename KeyInputIt, typename MappedInputIt>
+  void insert(KeyInputIt first, KeyInputIt last, MappedInputIt value_first) {
+    auto it = first;
+    auto value_it = value_first;
+    for (; it != last; ++it, ++value_it) {
+      operator[](*it) = *value_it;
+    }
   }
 
   container _table{8};
