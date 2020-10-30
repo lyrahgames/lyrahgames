@@ -10,6 +10,11 @@ email: lyrahgames@mailbox.org
 
 depends: * build2 >= 0.13.0
 depends: * bpkg >= 0.13.0
+
 depends: lyrahgames == $
 
+depends: glm ^0.9.9
+
 requires: sfml-graphics ; SFML Grahpics Module
+requires: glfw3 ; GLFW
+requires: glbinding ; glbinding

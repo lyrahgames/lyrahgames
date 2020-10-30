@@ -1,0 +1,7 @@
+import libs = glfw3%lib{glfw3}
+import libs += glbinding%lib{glbinding}
+import libs += glm%lib{glm}
+
+import libs += lyrahgames%lib{lyrahgames}
+
+exe{mosaic}: {hxx cxx}{**} $libs
