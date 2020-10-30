@@ -155,10 +155,10 @@ struct triangulation {
   }
 
   std::vector<point> points{
-      {-300.0f, -300.0f},
-      {300.0f, -300.0f},
-      {300.0f, 300.0f},
-      {-300.0f, 300.0f},
+      {-1.0e6f, -1.0e6f},
+      {1.0e6f, -1.0e6f},
+      {1.0e6f, 1.0e6f},
+      {-1.0e6f, 1.0e6f},
   };
   std::unordered_set<triangle, triangle::hash> triangles{{0, 1, 2}, {2, 3, 0}};
   std::unordered_map<edge, int, edge::hash> polygon{};

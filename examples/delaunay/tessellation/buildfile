@@ -1,0 +1,5 @@
+import libs = stb_image%lib{stb_image}
+import libs += fmt%lib{fmt}
+import libs += lyrahgames%lib{lyrahgames}
+
+exe{tessellation}: {hxx cxx}{**} $libs

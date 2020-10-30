@@ -13,7 +13,9 @@ depends: * bpkg >= 0.13.0
 
 depends: lyrahgames == $
 
+depends: fmt ^7.0.0
 depends: glm ^0.9.9
+depends: stb_image ^2.26.0
 
 requires: sfml-graphics ; SFML Grahpics Module
 requires: glfw3 ; GLFW
