@@ -9,6 +9,7 @@ jobs:
       - run:
           name: build2_configure_build_test
           command: |
+            cd tests
             bdep init -C @gcc cc config.cxx=g++
             b test: tests/
 
@@ -20,6 +21,7 @@ jobs:
       - run:
           name: build2_configure_build_test
           command: |
+            cd tests
             bdep init -C @gcc cc config.cxx=g++
             b test: tests/
 
@@ -31,6 +33,7 @@ jobs:
       - run:
           name: build2_configure_build_test
           command: |
+            cd tests
             bdep init -C @gcc cc config.cxx=g++
             b test: tests/
 
@@ -42,6 +45,7 @@ jobs:
       - run:
           name: build2_configure_build_test
           command: |
+            cd tests
             bdep init -C @clang cc config.cxx=clang++
             b test: tests/
 
@@ -53,6 +57,7 @@ jobs:
       - run:
           name: build2_configure_build_test
           command: |
+            cd tests
             bdep init -C @clang cc config.cxx=clang++
             b test: tests/
 
@@ -65,6 +70,7 @@ jobs:
   #         name: build2_configure_build_test
   #         command: |
   #           apt update && apt install -y kcov
+  #           cd tests
   #           bdep init -C @coverage cc config.cxx=g++ "config.cxx.coptions=-g -O0 -fprofile-arcs -ftest-coverage" "config.cxx.loptions=-fprofile-arcs -ftest-coverage"
   #           b
   #           kcov --include-path=lyrahgames/lyrahgames,../project-coverage/lyrahgames/lyrahgames ../coverage tests/tests/tests

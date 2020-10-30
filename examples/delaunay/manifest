@@ -1,0 +1,15 @@
+: 1
+name: lyrahgames-examples-delaunay
+version: 0.1.0-a.0.z
+project: lyrahgames
+summary: Examples of Module 'Delaunay' of Library 'lyrahgames'
+license: GPL-3.0-or-later ; GNU General Public License v3.0 or later
+description-file: README.md
+url: https://github.com/lyrahgames/lyrahgames
+email: lyrahgames@mailbox.org
+
+depends: * build2 >= 0.13.0
+depends: * bpkg >= 0.13.0
+depends: lyrahgames == $
+
+requires: sfml-graphics ; SFML Grahpics Module

@@ -1,0 +1,3 @@
+import libs = lyrahgames%lib{lyrahgames}
+import libs += sflm-graphics%lib{sfml-graphics}
+exe{delaunay}: cxx{delaunay} $libs

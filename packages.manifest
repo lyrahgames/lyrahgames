@@ -2,3 +2,5 @@
 location: lyrahgames/
 :
 location: tests/
+:
+location: examples/delaunay/
